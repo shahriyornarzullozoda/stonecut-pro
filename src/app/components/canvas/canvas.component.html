@@ -1,0 +1,141 @@
+<div
+    class="h-12 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-white dark:bg-slate-900 mt-0">
+    <div class="flex flex-row bg-primary rounded-md ml-2 items-center gap-1">
+        <button class="rounded px-3">
+            <span class="material-icons text-white text-lg">view_quilt</span>
+            <span class="text-xs font-bold text-white">2D</span>
+        </button>
+    </div>
+    <div class="flex items-center gap-x-3 bg-slate-100 dark:bg-slate-800 rounded-md p-1">
+        <button (click)="zoomIn()" class="p-1 hover:text-primary transition-colors"><span
+                class="material-icons text-sm">zoom_in</span></button>
+        <span class="text-[10px] px-2 font-mono font-bold"> {{ zoom | percent:'1.0-0' }}</span>
+        <button (click)="zoomOut()" class="p-1 hover:text-primary transition-colors"><span
+                class="material-icons text-sm">zoom_out</span></button>
+        <div class="w-px h-3 bg-slate-300 dark:bg-slate-600 mx-1"></div>
+        <button (click)="reset()" class="p-1 hover:text-primary transition-colors"><span
+                class="material-icons text-sm">fullscreen_exit</span></button>
+    </div>
+    <div class="flex items-center gap-4">
+        <div class="flex items-center gap-1">
+            <button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded"><span
+                    class="material-icons text-lg">image</span></button>
+            <button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded"><span
+                    class="material-icons text-lg">description</span></button>
+            <button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded"><span
+                    class="material-icons text-lg">text_fields</span></button>
+        </div>
+    </div>
+</div>
+<div (mousedown)="startPan($event)" (mousemove)="onPan($event)" (mouseup)="endPan()" (mouseleave)="endPan()"
+    class="flex-1 overflow-auto relative p-8 bg-slate-50 dark:bg-slate-950 canvas-grid" style="background-size: 20px 20px; min-height: 800px;  background-image: linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px), 
+     linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);">
+
+    <div *ngFor="let detail of details"
+        class="mx-auto bg-white dark:bg-slate-900 shadow-xl border border-slate-200 dark:border-slate-800 relative"
+        [style.width.px]="detail.width * zoom" [style.height.px]="detail.height * zoom" [style.transform]="transform"
+        style="max-width:100%; aspect-ratio:auto;">
+
+        <div
+            class="absolute -top-8 -right-8 text-right bg-white/80 dark:bg-slate-800/80 p-2 rounded backdrop-blur-sm border border-slate-100 dark:border-slate-700">
+            <div class="flex flex-row justify-between">
+                <p class="text-[10px] text-slate-500 uppercase font-bold">Листов</p>
+                <p class="text-xl font-bold">{{ totalSheets }}</p>
+            </div>
+            <div class="flex flex-row gap-2 justify-between">
+                <p class="text-[10px] text-slate-500 uppercase font-bold mt-1">Использование</p>
+                <p class="text-sm font-bold text-accent-teal">{{ usagePercent }}%</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="h-1/3 border-t border-slate-200 dark:border-slate-800 flex flex-col bg-white dark:bg-slate-900">
+    <div class="px-4 py-2 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+        <h4 class="text-sm font-bold flex items-center gap-2">
+            <span class="material-icons text-sm text-primary">list</span> Детали проекта
+        </h4>
+        <span class="bg-primary text-white text-[10px] px-1.5 py-0.5 rounded-full ml-2">{{ details.length }} {{ details.length === 1 ? 'деталь' : 'деталей' }}</span>
+    </div>
+    <div class="flex-1 overflow-y-auto p-4 space-y-2">
+        <div *ngFor="let detail of details"
+            class="flex border-l-4 border-l-blue-500 items-center justify-between bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg border border-slate-100 dark:border-slate-700 hover:border-primary/30 transition-colors">
+
+            <div class="flex items-center gap-3">
+                <div [ngClass]="{'bg-blue-500': !detail.locked, 'bg-slate-400': detail.locked}"
+                    class="w-2 h-2 rounded-full"></div>
+                <div>
+                    <p class="text-sm font-bold">{{detail.name}} <span
+                            class="text-slate-400 font-normal ml-1">({{detail.qty}})</span></p>
+                    <p class="text-[10px] text-slate-500">{{detail.width}} × {{detail.height}} мм</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-1">
+                <button (click)="optimizeDetail(detail)"
+                    class="bg-blue-500 p-2 rounded-md hover:bg-primary/10 transition-colors">
+                    <span class="material-icons text-sm text-red-400">sync</span>
+                </button>
+                <button (click)="toggleLock(detail)"
+                    class="bg-yellow-500 p-2 text-black rounded-md hover:bg-orange-500/10 transition-colors">
+                    <span class="material-icons text-sm">{{ detail.locked ? 'lock' : 'lock_open' }}</span>
+                </button>
+                <button (click)="deleteDetail(detail)"
+                    class="bg-red-500 p-2 rounded-md text-black hover:bg-red-500/10 transition-colors">
+                    <span class="material-icons text-sm text-white">delete_outline</span>
+                </button>
+            </div>
+        </div>
+        <!-- <div
+            class="flex border-l-4 border-l-blue-500 items-center justify-between bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg border border-slate-100 dark:border-slate-700 hover:border-primary/30 transition-colors">
+            <div class="flex items-center gap-3">
+                <div class="w-2 h-2 rounded-full bg-blue-500"></div>
+                <div>
+                    <p class="text-sm font-bold">Деталь 4 <span class="text-slate-400 font-normal ml-1">(2)</span></p>
+                    <p class="text-[10px] text-slate-500">1450 × 450 мм</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-1">
+                <button class="bg-blue-500 p-2 rounded-md hover:bg-primary/10 rounded transition-colors"><span
+                        class="material-icons text-sm text-red-400">sync</span></button>
+                <button
+                    class="bg-yellow-500 p-2 text-black rounded-md hover:bg-orange-500/10 rounded transition-colors"><span
+                        class="material-icons text-sm text-black">lock_open</span></button>
+                <button class="bg-red-500 p-2 rounded-md text-black hover:bg-red-500/10 rounded transition-colors"><span
+                        class="material-icons text-sm text-white">delete_outline</span></button>
+            </div>
+        </div> -->
+        <!-- <div
+            class="flex border-l-4 border-l-blue-500 items-center justify-between bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg border border-slate-100 dark:border-slate-700 hover:border-primary/30 transition-colors">
+            <div class="flex items-center gap-3">
+                <div class="w-2 h-2 rounded-full bg-accent-teal"></div>
+                <div>
+                    <p class="text-sm font-bold">Деталь 6</p>
+                    <p class="text-[10px] text-slate-500">2550 × 600 мм</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-1">
+                <button class="bg-blue-500 p-2 rounded-md hover:bg-primary/10 rounded transition-colors"><span
+                        class="material-icons text-sm text-red-400">sync</span></button>
+                <button
+                    class="bg-yellow-500 p-2 text-black rounded-md hover:bg-orange-500/10 rounded transition-colors"><span
+                        class="material-icons text-sm text-black">lock_open</span></button>
+                <button class="bg-red-500 p-2 rounded-md text-black hover:bg-red-500/10 rounded transition-colors"><span
+                 class="material-icons text-sm text-white">delete_outline</span></button>
+            </div>
+        </div> -->
+    </div>
+    <div class="p-2 border-t border-slate-100 dark:border-slate-800 grid grid-cols-3 gap-2">
+        <button (click)="clearAll()"
+            class="flex bg-slate-100 items-center justify-center gap-2 py-2 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+            <span class="material-icons text-sm">delete</span> Очистить всё
+        </button>
+        <button (click)="optimizeAll()"
+            class="flex items-center bg-slate-100 justify-center gap-2 py-2 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+            <span class="material-icons text-sm">auto_fix_high</span> Оптимизировать
+        </button>
+        <button (click)="saveAll()"
+            class="flex items-center bg-slate-100 justify-center gap-2 py-2 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+            <span class="material-icons text-sm">save</span> Сохранить
+        </button>
+    </div>
+</div>

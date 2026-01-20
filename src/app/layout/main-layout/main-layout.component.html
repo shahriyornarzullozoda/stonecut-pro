@@ -1,0 +1,16 @@
+<div class="h-screen flex flex-col bg-background-light dark:bg-background-dark">
+  <app-header></app-header>
+
+  <main class="flex-1 flex overflow-hidden">
+    <app-left-sidebar class="shrink-0 h-full w-72 md:w-80 lg:w-80 hidden md:flex flex-col border-r border-slate-200 dark:border-slate-800"></app-left-sidebar>
+    <section class="flex-1 min-w-0 flex flex-col overflow-auto h-full">
+      <router-outlet></router-outlet>
+    </section>
+    <app-right-sidebar class="shrink-0 h-full w-72 hidden lg:flex flex-col border-l border-slate-200 dark:border-slate-800"></app-right-sidebar>
+  </main>
+
+  <footer class="bg-slate-900 text-white px-4 py-1.5 text-[10px] flex items-center justify-between">
+    <span>StoneCut Pro ©</span>
+  </footer>
+</div>
+

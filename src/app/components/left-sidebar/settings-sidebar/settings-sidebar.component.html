@@ -1,0 +1,81 @@
+<section class="bg-white p-4 mt-4 border-b rounded-md mr-2 mb-2">
+    <label class="flex items-center gap-2 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-3">
+        <span class="material-icons text-sm">bolt</span> Алгоритм раскроя
+    </label>
+    <select
+        class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg  text-sm p-2.5 focus:ring-primary focus:border-primary">
+        <option>Базовый (быстрый)</option>
+        <option>Максимальная плотность</option>
+    </select>
+    <p class="text-xs text-slate-400 mt-2 leading-relaxed">Быстрый расчет для стандартных задач с учетом
+        особенностей материалов.</p>
+</section>
+<aside
+    class=" w-full
+    sm:w-72
+    lg:w-80 bg-white dark:bg-slate-900  border-slate-200 dark:border-slate-800 flex flex-col p-4 -mx-2 mb-2 overflow-y-auto">
+    <section>
+        <label class="flex items-center gap-2 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-3">
+            <span class="material-icons text-sm">content_cut</span> Настройки резки
+        </label>
+        <div class="space-y-4">
+            <div>
+                <label class="text-xs text-slate-500 mb-1.5 block">Ширина реза (мм)</label>
+                <input
+                    class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm p-2.5"
+                    type="number" value="3" />
+            </div>
+            <div>
+                <label class="text-xs text-slate-500 mb-1.5 block">Минимальный отступ (мм)</label>
+                <input
+                    class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm p-2.5"
+                    type="number" value="3" />
+            </div>
+            <div>
+                <label class="text-xs text-slate-500 mb-1.5 block">Скорость резки (мм/мин)</label>
+                <input
+                    class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-sm p-2.5"
+                    type="number" value="300" />
+            </div>
+        </div>
+    </section>
+</aside>
+<section class="bg-white p-4 mr-2 my-2 rounded-md">
+    <label class="flex items-center gap-2 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-3">
+        <span class="material-icons text-sm">sync</span> Поворот деталей
+    </label>
+    <div class="flex items-center gap-3">
+        <input checked="" class="w-4 h-4 text-primary rounded border-slate-300 focus:ring-primary" type="checkbox" />
+        <span class="text-sm text-slate-600 dark:text-slate-300">Разрешать поворот по умолчанию</span>
+    </div>
+</section>
+<section class="bg-white p-4 mb-3 mr-2 rounded-md">
+    <label class="flex items-center gap-2 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-3">
+        <span class="material-icons text-sm">visibility</span> Визуализация
+    </label>
+    <div class="space-y-2">
+        <label class="flex items-center gap-3 cursor-pointer">
+            <input checked="" class="w-4 h-4 text-primary rounded border-slate-300" type="checkbox" />
+            <span class="text-sm text-slate-600 dark:text-slate-300">Показывать сетку</span>
+        </label>
+        <label class="flex items-center gap-3 cursor-pointer">
+            <input checked="" class="w-4 h-4 text-primary rounded border-slate-300" type="checkbox" />
+            <span class="text-sm text-slate-600 dark:text-slate-300">Показывать размеры</span>
+        </label>
+    </div>
+</section>
+<div class="mt-4 mx-4 border-t border-slate-100 dark:border-slate-800">
+    <button
+    (click)="openCost.emit()"
+        class="w-full bg-[#283593] hover:bg-indigo-900 text-white py-4 rounded-lg flex items-center justify-between px-4 transition-all group">
+        <div class="flex items-center gap-3">
+            <div class="p-2 rounded-full group-hover:scale-110 transition-transform">
+                <span class="material-icons text-xl">play_circle</span>
+            </div>
+            <div class="text-left">
+                <p class="text-sm font-bold leading-tight">Рассчитать раскрой</p>
+            </div>
+        </div>
+        <span class="text-xs font-mono opacity-50">~0.5 сек</span>
+    </button>
+</div>

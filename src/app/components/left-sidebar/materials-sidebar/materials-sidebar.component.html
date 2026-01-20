@@ -1,0 +1,87 @@
+<aside class="w-80 bg-card-light dark:bg-card-dark border-r border-slate-200 dark:border-slate-800 flex flex-col z-10">
+    <div class="p-4 flex-1 overflow-y-auto custom-scrollbar flex flex-col gap-6">
+        <section>
+            <div class="bg-white rounded-md p-4">
+                <div class="flex items-center gap-2 mb-4 text-primary">
+                    <span class="material-icons text-lg">category</span>
+                    <h2 class="font-semibold text-sm">Выбор материала</h2>
+                </div>
+                <div class="relative group">
+                    <div class="relative">
+                        <select
+                            class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg py-2.5 pl-3 pr-10 text-sm focus:ring-primary focus:border-primary appearance-none cursor-pointer">
+                            <option>Кварц премиум (3200×1600)</option>
+                            <option>Акрил стандартный (3680×760)</option>
+                            <option>Акрил премиум (3680×760)</option>
+                            <option>Кварц стандартный (3050×1440)</option>
+                            <option>Акрил тонкий 6мм (3680×760)</option>
+                        </select>
+                        <!-- <span class="material-icons text-sm">bolt</span> -->
+                    </div>
+                </div>
+            </div>
+            <div class="mt-2 bg-blue-300 rounded-md px-4 py-6 space-y-3">
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-slate-500">Толщина:</span>
+                    <span class="font-medium">20 мм</span>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-slate-500">Толщина:</span>
+                    <span class="font-medium">20 мм</span>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-slate-500">Толщина:</span>
+                    <span class="font-medium">20 мм</span>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-slate-500">Цена за лист:</span>
+                    <span class="font-bold">28 000 ₽</span>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-slate-500">Цена за м²:</span>
+                    <span class="font-bold">5 468 ₽</span>
+                </div>
+            </div>
+        </section>
+        <!-- <hr class="border-slate-100 dark:border-slate-800" /> -->
+        <section class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl border border-blue-100 dark:border-blue-800/50">
+            <div class="flex items-center gap-2 mb-4 text-blue-600 dark:text-blue-400">
+                <span class="material-icons text-lg">calculate</span>
+                <h2 class="font-semibold text-sm">Предварительный расчет</h2>
+            </div>
+            <div class="space-y-3 mb-4">
+                <div class="flex justify-between text-xs">
+                    <span class="text-slate-500 dark:text-slate-400">Материал:</span>
+                    <span class="font-medium text-slate-700 dark:text-slate-200">56 000 ₽</span>
+                </div>
+                <div class="flex justify-between text-xs">
+                    <span class="text-slate-500 dark:text-slate-400">Резка:</span>
+                    <span class="font-medium text-slate-700 dark:text-slate-200">4 425 ₽</span>
+                </div>
+                <div class="flex justify-between text-xs">
+                    <span class="text-slate-500 dark:text-slate-400">Обработка кромки:</span>
+                    <span class="font-medium text-slate-700 dark:text-slate-200">11 505 ₽</span>
+                </div>
+            </div>
+            <div class="pt-3 border-t border-blue-200 dark:border-blue-800/50 flex justify-between items-baseline">
+                <span class="text-sm font-bold text-blue-700 dark:text-blue-400 uppercase tracking-wide">Итого:</span>
+                <span class="text-xl font-black text-blue-600 dark:text-blue-300">71 930 ₽</span>
+            </div>
+        </section>
+        <div class="mt-4 mx-4 border-t border-slate-100 dark:border-slate-800">
+            <button (click)="openCost.emit()"
+                class="w-full bg-[#283593] hover:bg-indigo-900 text-white py-4 rounded-lg flex items-center justify-between px-4 transition-all group">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 rounded-full group-hover:scale-110 transition-transform">
+                        <span class="material-icons text-xl">play_circle</span>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-sm font-bold leading-tight">Рассчитать раскрой</p>
+                        <p class="text-[10px] opacity-70">Автоматическая оптимизация</p>
+                    </div>
+                </div>
+                <span class="text-xs font-mono opacity-50">~0.5 сек</span>
+            </button>
+        </div>
+    </div>
+</aside>

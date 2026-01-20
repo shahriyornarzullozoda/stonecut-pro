@@ -1,0 +1,47 @@
+<div class="flex gap-1 bg-[#f8fafc] dark:bg-slate-900 mb-1 mr-2 rounded-xl border border-slate-200 dark:border-slate-800 p-1">
+    <button
+        (click)="currentStep = 'project'"
+        [class.bg-primary]="currentStep === 'project'"
+        [class.text-white]="currentStep === 'project'"
+        [class.text-slate-500]="currentStep !== 'project'"
+        [class.hover:bg-slate-100]="currentStep !== 'project'"
+        class="flex-1 py-2 px-1 rounded-lg transition-all text-xs font-semibold flex items-center justify-center gap-1">
+        <span class="material-icons text-sm">edit_square</span> Проект
+    </button>
+
+    <button
+        (click)="currentStep = 'materials'"
+        [class.bg-primary]="currentStep === 'materials'"
+        [class.text-white]="currentStep === 'materials'"
+        [class.text-slate-500]="currentStep !== 'materials'"
+        [class.hover:bg-slate-100]="currentStep !== 'materials'"
+        class="flex-1 py-2 px-1 rounded-lg transition-all text-xs font-semibold flex items-center justify-center gap-1">
+        <span class="material-icons text-sm">category</span> Материалы
+    </button>
+
+    <button
+        (click)="currentStep = 'settings'"
+        [class.bg-primary]="currentStep === 'settings'"
+        [class.text-white]="currentStep === 'settings'"
+        [class.text-slate-500]="currentStep !== 'settings'"
+        [class.hover:bg-slate-100]="currentStep !== 'settings'"
+        class="flex-1 py-2 px-1 rounded-lg transition-all text-xs font-semibold flex items-center justify-center gap-1">
+        <span class="material-icons text-sm">settings</span> Настр.
+    </button>
+</div>
+
+<ng-container [ngSwitch]="currentStep">
+    <app-project-sidebar *ngSwitchCase="'project'" (nextStep)="currentStep = 'materials'">
+    </app-project-sidebar>
+
+    <app-materials-sidebar *ngSwitchCase="'materials'" (nextStep)="currentStep = 'settings'"
+        (prevStep)="currentStep = 'project'">
+    </app-materials-sidebar>
+
+    <app-settings-sidebar *ngSwitchCase="'settings'" (prevStep)="currentStep = 'materials'">
+    </app-settings-sidebar>
+</ng-container>
+<app-price-modal
+  *ngIf="showCostModal"
+  (close)="closeCostModal()">
+</app-price-modal>

@@ -1,0 +1,86 @@
+<div class="flex-1 flex-col overflow-hidden">
+    <div class="p-4 bg-white border rounded-xl mr-2 mb-2">
+        <div class="mb-6">
+            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                <span class="material-icons text-sm">file_upload</span> Импорт деталей
+            </h3>
+
+            <div (click)="fileInput.click()"
+                class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-lg p-4 flex flex-col items-center justify-center hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all">
+
+                <span class="material-icons text-slate-400 text-3xl mb-2">description</span>
+                <span class="text-sm font-medium text-slate-600 dark:text-slate-400">
+                    CSV файл
+                </span>
+            </div>
+
+            <input #fileInput type="file" accept=".csv" hidden (change)="onFileSelected($event)" />
+        </div>
+    </div>
+    <aside class="
+    w-full
+    sm:w-72
+    lg:w-80
+    flex flex-col
+    bg-white dark:bg-slate-900
+    border-r border-slate-200 dark:border-slate-800
+    rounded-xl
+    shadow-sm -ml-2
+    overflow-y-auto">
+        <div class="p-4">
+            <div class="space-y-4">
+                <h3 class="text-xs font-bold text-primary uppercase tracking-wider flex items-center gap-2">
+                    <span class="material-icons text-sm">add_circle</span> Новая деталь
+                </h3>
+                <div>
+                    <label class="block text-xs font-medium text-slate-500 mb-1">Размеры (мм)</label>
+                    <div class="flex items-center gap-2">
+                        <input
+                            class="w-full text-sm rounded-md border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary"
+                            [(ngModel)]="width" placeholder="2550" type="number" />
+                        <span class="text-slate-400 text-sm">×</span>
+                        <input
+                            class="w-full text-sm rounded-md border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary"
+                            [(ngModel)]="height" placeholder="600" type="number" />
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-500 mb-1">Количество</label>
+                    <input
+                        class="w-full text-sm rounded-md border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary"
+                        [(ngModel)]="quantity" type="number" value="1" />
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-500 mb-1">Название</label>
+                    <input
+                        class="w-full text-sm rounded-md border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary"
+                        [(ngModel)]="name" placeholder="Название детали" type="text" />
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-500 mb-1">Примечание</label>
+                    <textarea
+                        class="w-full text-sm rounded-md border-slate-200 dark:border-slate-700 dark:bg-slate-800 focus:ring-primary"
+                        [(ngModel)]="note" placeholder="Особые требования..." rows="2"></textarea>
+                </div>
+                <button (click)="addDetail()"
+                    class="w-full bg-accent-teal hover:bg-teal-600 text-white font-semibold py-2.5 rounded-md flex items-center justify-center gap-2 transition-colors">
+                    <span class="material-icons text-lg">add</span> Добавить деталь
+                </button>
+            </div>
+        </div>
+    </aside>
+    <div class="mt-4 mx-4 border-t border-slate-100 dark:border-slate-800">
+        <button (click)="openCost.emit()"
+            class="w-full bg-[#283593] hover:bg-indigo-900 text-white py-4 rounded-lg flex items-center justify-between px-4 transition-all group">
+            <div class="flex items-center gap-3">
+                <div class="p-2 rounded-full group-hover:scale-110 transition-transform">
+                    <span class="material-icons text-xl">play_circle</span>
+                </div>
+                <div class="text-left">
+                    <p class="text-sm font-bold leading-tight">Рассчитать раскрой</p>
+                </div>
+            </div>
+            <span class="text-xs font-mono opacity-50">~0.5 сек</span>
+        </button>
+    </div>
+</div>

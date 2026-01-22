@@ -1,12 +1,14 @@
-
 export interface Detail {
   id: number;
-  name: string;
-  width: number;   
-  height: number;  
-  x: number;      
-  y: number;      
+  width: number;
+  height: number;
   qty: number;
+  name: string;
+  note?: string;
+  x?: number;
+  y?: number;
+  sheet?: number;
+  rotated?: boolean;
   color?: string;
-  locked: false;
+  locked?: boolean;
 }

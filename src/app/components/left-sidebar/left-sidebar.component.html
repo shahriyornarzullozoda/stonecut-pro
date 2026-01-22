@@ -31,17 +31,20 @@
 </div>
 
 <ng-container [ngSwitch]="currentStep">
-    <app-project-sidebar *ngSwitchCase="'project'" (nextStep)="currentStep = 'materials'">
+    <app-project-sidebar *ngSwitchCase="'project'" (nextStep)="currentStep = 'materials'" (openCost)="showCostModal = true">
     </app-project-sidebar>
 
-    <app-materials-sidebar *ngSwitchCase="'materials'" (nextStep)="currentStep = 'settings'"
-        (prevStep)="currentStep = 'project'">
+    <app-materials-sidebar *ngSwitchCase="'materials'" (openCost)="onCalculateCut($event)" (nextStep)="currentStep = 'settings'"
+        (prevStep)="currentStep = 'project'" (openCost)="showCostModal = true">
     </app-materials-sidebar>
 
-    <app-settings-sidebar *ngSwitchCase="'settings'" (prevStep)="currentStep = 'materials'">
+    <app-settings-sidebar *ngSwitchCase="'settings'" (prevStep)="currentStep = 'materials'" (openCost)="showCostModal = true">
     </app-settings-sidebar>
 </ng-container>
 <app-price-modal
   *ngIf="showCostModal"
+  [cost]="projectCost"
+  [metrics]="metrics"
+  [distribution]="distribution"
   (close)="closeCostModal()">
 </app-price-modal>

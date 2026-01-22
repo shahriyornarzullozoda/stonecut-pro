@@ -12,28 +12,20 @@ import { CostService } from '../../../services/cost.service';
   templateUrl: './project-sidebar.component.html',
   styleUrl: './project-sidebar.component.scss'
 })
+
 export class ProjectSidebarComponent {
   @Output() openCost = new EventEmitter<void>();
-  width: number | null = null;
-  height: number | null = null;
-  quantity = 1;
-  name = '';
-  note = '';
+  @Output() nextStep = new EventEmitter<void>();
 
-  constructor(private project: ProjectService, private costService: CostService) { }
+  constructor( private project: ProjectService) {}
 
+  width: number = 0;
+  height: number = 0;
+  quantity: number = 1;
+  name: string = '';
+  note: string = '';
 
-  addDetail() {
-    if (!this.width || !this.height || this.quantity < 1) {
-      return;
-    }
-
-    this.project.addDetail({
-      width: this.width,
-      height: this.height,
-      qty: this.quantity,
-      name: this.name,
-    });
+  resetForm() {
     this.width = 0;
     this.height = 0;
     this.quantity = 1;
@@ -41,10 +33,41 @@ export class ProjectSidebarComponent {
     this.note = '';
   }
 
-  calculate() {
-    if (!this.project.details.length) return;
+  addDetail() {
+    if (this.width <= 0 || this.height <= 0 || this.quantity < 1) {
+      // можно добавить toast / alert
+      console.warn('Некорректные размеры или количество');
+      return;
+    }
 
-    this.project.calculateLayout();
+    this.project.addDetail({
+      width: this.width,
+      height: this.height,
+      qty: this.quantity,
+      name: this.name.trim() || `Деталь ${this.width}×${this.height}`,
+      note: this.note.trim() || undefined,
+    });
+
+    this.resetForm();
+  }
+
+  calculateCutting() {
+    if (!this.project.details.length) {
+      alert('Добавьте хотя бы одну деталь');
+      return;
+    }
+
+    const material = this.project.material;
+
+    if (!material) {
+      alert('Выберите материал перед расчётом раскроя');
+      this.nextStep.emit();
+      return;
+    }
+
+    this.project.calculateCutting(material);
+
+    this.openCost.emit();
   }
 
   onFileSelected(event: Event) {
@@ -52,44 +75,57 @@ export class ProjectSidebarComponent {
     if (!input.files?.length) return;
 
     const file = input.files[0];
-    const reader = new FileReader();
+    if (!file.name.endsWith('.csv')) {
+      alert('Пожалуйста, выберите файл .csv');
+      return;
+    }
 
+    const reader = new FileReader();
     reader.onload = () => {
       const text = reader.result as string;
       this.parseCsv(text);
     };
-
     reader.readAsText(file);
     input.value = '';
   }
-  parseCsv(csv: string) {
-    const lines = csv
-      .split('\n')
-      .map(l => l.trim())
-      .filter(Boolean);
 
-    const dataLines = lines.slice(1);
+  private parseCsv(csv: string) {
+    const lines = csv.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
 
-    dataLines.forEach((line, index) => {
-      const [width, height, qty, name, note] = line.split(',');
+    if (lines.length < 1) return;
 
-      const w = Number(width);
-      const h = Number(height);
-      const q = Number(qty || 1);
+    // Пропускаем заголовок, если он есть
+    const dataLines = lines.slice(lines[0].toLowerCase().includes('ширина') ? 1 : 0);
 
-      if (!w || !h) {
-        console.warn(`Строка ${index + 2} пропущена`);
+    let added = 0;
+    let skipped = 0;
+
+    dataLines.forEach((line, idx) => {
+      const cols = line.split(',').map(c => c.trim());
+      if (cols.length < 2) return;
+
+      const w = Number(cols[0]);
+      const h = Number(cols[1]);
+      const q = Number(cols[2] || 1);
+      const name = cols[3] || '';
+      // const note = cols[4] || '';
+
+      if (isNaN(w) || isNaN(h) || w <= 0 || h <= 0) {
+        skipped++;
         return;
       }
 
       this.project.addDetail({
         width: w,
         height: h,
-        qty: q,
-        name: name?.trim() || `Деталь ${w}×${h}`,
+        qty: Math.max(1, q),
+        name: name || `Деталь ${w}×${h}`,
       });
+      added++;
     });
+
+    if (added > 0) {
+      console.log(`Добавлено деталей: ${added}, пропущено: ${skipped}`);
+    }
   }
-
 }
-

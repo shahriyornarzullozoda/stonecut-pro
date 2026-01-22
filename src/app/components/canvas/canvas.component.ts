@@ -3,6 +3,7 @@ import { CanvasService } from '../../services/canvas.service';
 import { CommonModule, PercentPipe } from '@angular/common';
 import { Detail } from '../interface/detail.model';
 import { ProjectService } from '../../services/project.service';
+import { Material } from '../interface/material.model';
 
 @Component({
   selector: 'app-canvas',
@@ -19,9 +20,9 @@ export class CanvasComponent {
   private panning = false;
   private lastX = 0;
   private lastY = 0;
-   
-  
-  totalSheets = 0; 
+
+
+  totalSheets = 0;
   usagePercent = 0;
 
 
@@ -40,11 +41,11 @@ export class CanvasComponent {
   });
 }
   calculateCanvasStats() {
-  const sheetArea = 2550 * 1250; 
+  const sheetArea = 2550 * 1250;
   const totalArea = this.details.reduce((sum, d) => sum + (d.width * d.height * d.qty), 0);
   this.totalSheets = Math.ceil(totalArea / sheetArea);
-  this.usagePercent = totalArea && sheetArea 
-    ? Math.min(100, Math.round((totalArea / (this.totalSheets * sheetArea)) * 100)) 
+  this.usagePercent = totalArea && sheetArea
+    ? Math.min(100, Math.round((totalArea / (this.totalSheets * sheetArea)) * 100))
     : 0;
 }
 
@@ -61,25 +62,18 @@ export class CanvasComponent {
 }
 
 optimizeDetail(detail: Detail) {
-  this.project.optimizeDetail(detail); 
+  this.project.optimizeDetail(detail);
 }
 
 toggleLock(detail: Detail) {
-  // detail.locked = !detail.locked;
+   this.project.toggleLock(detail);
 }
   clearAll() {
     this.project.clear();
   }
 
   optimizeAll() {
-     const optimized = this.details.map(d => ({
-    ...d,
-    x: Math.random() * 500, 
-    y: Math.random() * 500,
-    color: '#f59e0b' 
-  }));
-
-  // this.detailsSubject.next(optimized);
+     this.project.optimizeAll();
   }
 
   saveAll() {
@@ -92,13 +86,12 @@ toggleLock(detail: Detail) {
     x: d.x,
     y: d.y
   }));
-
   console.log('Сохраняем детали проекта:', dataToSave);
 
 }
-  
+
 
 }
-  
+
 
 
